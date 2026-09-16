@@ -19,6 +19,7 @@ permissions:
 
 jobs:
   sync-project:
+    if: ${{ secrets.PROJECT_TOKEN != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout trusted default branch
