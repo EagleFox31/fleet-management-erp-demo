@@ -1,43 +1,23 @@
 # Fleet Management ERP Demo
 
-Public demo edition of a fleet management and maintenance platform covering vehicles, workshop operations, spare parts and tire tracking.
+Public demo edition of a fleet management and maintenance platform covering vehicles, workshop operations, spare parts, tires, purchasing, fuel, missions and billing.
 
-This repository is intentionally separate from the private working codebase. It contains only code and synthetic data that are safe to publish.
+This repository is intentionally separate from the private production codebase. Only code, configuration and data that are safe to publish belong here.
 
-## What is included
+## Scope
 
-The current public build focuses on four connected areas:
+The system is organized around the workflows that connect day-to-day fleet operations:
 
-- **Fleet** — vehicle records, mileage and operational status
-- **Workshop** — maintenance work orders with a simple status lifecycle
-- **Inventory** — spare-parts stock and reorder alerts
-- **Tires** — mounting position, tread depth and inspection status
+- **Fleet** — vehicle records, status history, documents and compliance tracking
+- **Workshop** — maintenance requests, work orders, preventive maintenance and technician activity
+- **Inventory** — spare parts, stock movements and replenishment
+- **Tires** — tire inventory, mounting positions, inspections and rotations
+- **Purchasing** — suppliers, purchase orders and receiving workflows
+- **Fuel** — refuelling records and consumption tracking
+- **Operations** — missions, drivers and vehicle assignments
+- **Billing** — operational billing and payment follow-up
 
-The demo is interactive: work orders can be advanced through their lifecycle from the UI. Changes are kept in memory and reset when the server restarts.
-
-## Run it locally
-
-Requirements: Node.js 22+.
-
-```bash
-npm install
-npm run dev
-```
-
-Then open `http://localhost:5173`.
-
-The React client runs through Vite and proxies API requests to the Express server on port `5000`.
-
-For a production-style build:
-
-```bash
-npm run build
-NODE_ENV=production npm start
-```
-
-The Express server will serve the built client from `http://localhost:5000`.
-
-## Public demo architecture
+## Architecture
 
 ```text
 React + TypeScript + Vite
@@ -46,35 +26,35 @@ React + TypeScript + Vite
 Express + TypeScript
           │
           ▼
-Synthetic in-memory dataset
+Drizzle ORM + PostgreSQL
+
+Realtime updates: WebSocket / PostgreSQL notifications
 ```
 
-Client and server share the same TypeScript domain types through `shared/`.
+The application follows a shared-schema approach so that client and server rely on the same domain types and status definitions.
 
-The private implementation goes further with PostgreSQL, Drizzle ORM, realtime events and broader business workflows. Those project-specific pieces are not copied here automatically.
+## Migration status
 
-## Demo data
+The current repository contains a temporary placeholder implementation. It is **not** the final public edition of the real product.
 
-Every record in this repository is synthetic. Registrations, work orders, part references and tire serial numbers are demonstration values created for this public build.
+The migration backlog is tracked through GitHub Issues and AppFactory Project Automation. The target is to replace the placeholder with a sanitized edition derived from the private `fleet-management-and-erp` codebase while preserving the real architecture, components and workflows.
 
-No production data, customer data, private documents, database backups, credentials or deployment secrets are included.
+## Public demo policy
 
-## Project structure
+The public repository will only contain sanitized material. In particular, it will not include:
 
-```text
-client/           React UI
-server/           Express API and synthetic demo data
-shared/           shared domain types
-.github/workflows CI type-check and build
-```
+- production or client data;
+- private business documents or source spreadsheets;
+- database backups;
+- credentials, tokens or deployment secrets;
+- private infrastructure details;
+- internal reports or customer-specific configuration.
 
-## Current stack
+Any sample records included here will be synthetic and created only for demonstration and testing.
 
-`TypeScript` · `React` · `Vite` · `Express`
+## Stack
 
-## Next steps
-
-The public edition will grow only when a feature can be exposed without carrying private project material with it. Planned additions include screenshots, a richer synthetic dataset and selected workflows from purchasing, fuel and operations.
+`TypeScript` · `React` · `Vite` · `Express` · `Drizzle ORM` · `PostgreSQL` · `WebSocket`
 
 ---
 
