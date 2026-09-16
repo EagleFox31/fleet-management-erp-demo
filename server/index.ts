@@ -1,9 +1,12 @@
 import cors from 'cors';
 import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { inventory, tires, vehicles, workOrders, advanceWorkOrder } from './data.js';
 
 const app = express();
 const port = Number(process.env.PORT ?? 5000);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(cors());
 app.use(express.json());
@@ -35,6 +38,12 @@ app.patch('/api/work-orders/:id/advance', (req, res) => {
   return res.json(updated);
 });
 
+if (process.env.NODE_ENV === 'production') {
+  const clientDir = path.resolve(__dirname, '../../dist-client');
+  app.use(express.static(clientDir));
+  app.get('*', (_req, res) => res.sendFile(path.join(clientDir, 'index.html')));
+}
+
 app.listen(port, () => {
-  console.log(`Fleet Management ERP public demo API running on http://localhost:${port}`);
+  console.log(`Fleet Management ERP public demo running on http://localhost:${port}`);
 });
